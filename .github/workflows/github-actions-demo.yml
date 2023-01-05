@@ -20,7 +20,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
-      - name: Check npm ci
         uses: rjstone/discord-webhook-notify@v1
         if: failure()
         with:
