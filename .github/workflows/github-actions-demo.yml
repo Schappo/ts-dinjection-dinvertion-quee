@@ -8,26 +8,36 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [16.x]
 
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 16.x
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm ci
+          node-version: 16.x
+      - run: npm install
       - run: npm run build
-      - name: teste
-        uses: rjstone/discord-webhook-notify@v1
+      - name: Discord notification
         if: success()
-        with:
-          severity: error
-          details: Build Failed!
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
- 
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_USERNAME: BOTJÃO
+          DISCORD_EMBEDS: '[{"title": "Build process success","color": 4047960, "description": "The project ${{ EVENT_PAYLOAD.repository.full_name }} has been successfully Builded."}]'
+        uses: Ilshidur/action-discord@master
+        if: failure()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_USERNAME: BOTJÃO
+          DISCORD_EMBEDS: '[{"title": "Build process Failure","color": 16711680, "description": "The project ${{ EVENT_PAYLOAD.repository.full_name }} have occur error."}]'
+        uses: Ilshidur/action-discord@master
+
+        - name: Run Test
+        - run: npm run test
+        - name: Discord notification - Test Success
+          if: success()
+          env:
+            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+            DISCORD_USERNAME: BOTJÃO
+            DISCORD_EMBEDS: '[{"title": "Build process success","color": 4047960, "description": "The project  has been successfully Builded."}]'
+          uses: Ilshidur/action-discord@master
