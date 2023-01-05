@@ -20,31 +20,33 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
-        if: failure()
-        with:
-          severity: error
-          details: Build Failed!
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      - run: npm run build --if-present
-        if: failure()
-        with:
-          severity: error
-          details: Build Failed!
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      - run: npm test
-        if: failure()
-        with:
-          severity: error
-          details: Test Failed!
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      if: failure()
-        with:
-          severity: error
-          details: Action Failed!
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      if: success()
-        with:
-          severity: info
-          details: All Jobs Pass!
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-    
+        - name: Check npm ci
+          uses: rjstone/discord-webhook-notify@v1
+          if: failure()
+          with:
+            severity: error
+            details: Build Failed!
+            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+    #   - run: npm run build --if-present
+    #     if: failure()
+    #     with:
+    #       severity: error
+    #       details: Build Failed!
+    #       webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+    #   - run: npm test
+    #     if: failure()
+    #     with:
+    #       severity: error
+    #       details: Test Failed!
+    #       webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+    # if: failure()
+    #   with:
+    #     severity: error
+    #     details: Action Failed!
+    #     webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+    # if: success()
+    #   with:
+    #     severity: info
+    #     details: All Jobs Pass!
+    #     webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+  
