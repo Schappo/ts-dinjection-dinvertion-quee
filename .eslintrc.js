@@ -18,8 +18,6 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   rules: {
     'prettier/prettier': 'error',
-    // indent: ['error', 'tab'],
-    // 'linebreak-style': ['error', 'unix'],
-    // quotes: ['error', 'single'],
+    '@typescript-eslint/no-unused-vars': 'error',
   },
 };

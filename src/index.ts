@@ -1,5 +1,6 @@
 import { a } from './test';
 
-function main() {
+export function main() {
   const b = a;
+  return b;
 }
