@@ -23,5 +23,5 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           DISCORD_USERNAME: BOTJÃO
-          DISCORD_EMBEDS: '[{"title": "Build process success","color": 4047960, "description": The project {{ EVENT_PAYLOAD.repository.full_name }} has been successfully Builded.}]'
+          DISCORD_EMBEDS: '[{"title": "Build process success","color": 4047960, "description": "The project {{ EVENT_PAYLOAD.repository.full_name }} has been successfully Builded."}]'
         uses: Ilshidur/action-discord@master
