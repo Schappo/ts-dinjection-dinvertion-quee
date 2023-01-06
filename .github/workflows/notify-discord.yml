@@ -9,9 +9,11 @@ jobs:
   send_message:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
       - name: Send message to Discord
         uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_MESSAGE: A new pull request has been created in the main branch!
         with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          message: A new commit has been pushed to the repository!
+          entryPoint: sendMessage.sh
+          args: ${{ env.DISCORD_WEBHOOK_URL }} ${{ env.DISCORD_MESSAGE }}
