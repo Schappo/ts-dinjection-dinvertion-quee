@@ -23,15 +23,15 @@ jobs:
         if: success()
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-          DISCORD_USERNAME: BOTJÃO
-          DISCORD_EMBEDS: '[{"title": "Build process success","color": 4047960, "description": "The project ${{ EVENT_PAYLOAD.repository.full_name }} has been successfully Builded."}]'
+          DISCORD_USERNAME: BOTJÃO - ${{ EVENT_PAYLOAD.repository.full_name }}
+          DISCORD_EMBEDS: '[{"title": "Build process success","color": 4047960, "description": "The project has been successfully Builded."}]'
         uses: Ilshidur/action-discord@master
       - name: Discord notification failure
         if: failure()
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-          DISCORD_USERNAME: BOTJÃO
-          DISCORD_EMBEDS: '[{"title": "Build process Failure","color": 16711680, "description": "The project ${{ EVENT_PAYLOAD.repository.full_name }} have occur error."}]'
+          DISCORD_USERNAME: BOTJÃO - ${{ EVENT_PAYLOAD.repository.full_name }}
+          DISCORD_EMBEDS: '[{"title": "Build process Failure","color": 16711680, "description": "The project have occur error."}]'
         uses: Ilshidur/action-discord@master
 
       - run: npm run test
@@ -40,6 +40,6 @@ jobs:
         if: success()
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-          DISCORD_USERNAME: BOTJÃO
-          DISCORD_EMBEDS: '[{"title": "Build process success","color": 4047960, "description": "The project  has been successfully Builded."}]'
+          DISCORD_USERNAME: BOTJÃO - ${{ EVENT_PAYLOAD.repository.full_name }}
+          DISCORD_EMBEDS: '[{"title": "Build process success","color": 4047960, "description": "The project has been successfully Builded."}]'
         uses: Ilshidur/action-discord@master
