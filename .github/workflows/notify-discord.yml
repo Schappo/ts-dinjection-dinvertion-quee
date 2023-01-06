@@ -12,7 +12,7 @@ jobs:
       - name: Interpolate PR Message
         id: pr_message
         run: |
-          echo "pr_message=[{"title": "teste"}] >> $GITHUB_OUTPUT"
+          echo "{pr_message}={[{"title": "teste"}]} >> $GITHUB_OUTPUT"
           
       - name: Send message to Discord
         uses: Ilshidur/action-discord@master
