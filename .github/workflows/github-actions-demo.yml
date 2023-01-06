@@ -17,6 +17,7 @@ jobs:
         with:
           node-version: 16.x
       - run: npm install
+      
       - run: npm run build
       - name: Discord notification Success
         if: success()
@@ -33,9 +34,8 @@ jobs:
           DISCORD_EMBEDS: '[{"title": "Build process Failure","color": 16711680, "description": "The project ${{ EVENT_PAYLOAD.repository.full_name }} have occur error."}]'
         uses: Ilshidur/action-discord@master
 
-      - name: Run Test
       - run: npm run test
-      
+
       - name: Discord notification - Test Success
         if: success()
         env:
