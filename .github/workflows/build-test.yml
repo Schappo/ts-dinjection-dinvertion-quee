@@ -19,7 +19,8 @@ jobs:
       - run: npm install
       - run: npm run build
 
-    test:
-      - name: Run Tests
-      - run: npm run test
+  test:
+    needs: build
+    - name: Run Tests
+    - run: npm run test
 
