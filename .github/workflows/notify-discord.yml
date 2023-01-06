@@ -6,39 +6,38 @@ on:
       - main
 
 jobs:
-  # check_build_test:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: Run tests
+  check_build_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run tests
+        uses: actions/build-test
 
   send-success-notification:
-    - uses: ./.github/workflows/build-test
-      runs-on: ubuntu-latest
-      needs: check_build_test
-      if: success()
-      steps:
-        - name: Send Success Message to Discord
-          env:
-            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-            DISCORD_USERNAME: 'W3bLocker'
-            DISCORD_AVATAR: 'https://i.imgur.com/BPnQGGY.jpeg'
-            DISCORD_EMBEDS: '[{"color":39423,"title":"${{ github.event.pull_request.title }}","url":"${{ github.event.pull_request.html_url }}", "author": {"name": "${{ github.event.pull_request.user.login}}", "icon_url": "${{ github.event.pull_request.user.avatar_url }}", "url": "${{ github.event.pull_request.user.html_url}}"}, "description":"Branch: ${{ github.event.pull_request.base.ref }}","timestamp":"${{ github.event.pull_request.updated_at }}","footer":{"text":"${{ github.event.repository.full_name }}","icon_url":"${{ github.event.repository.owner.avatar_url }}"}}]'
-          uses: Ilshidur/action-discord@master
+    runs-on: ubuntu-latest
+    needs: check_build_test
+    if: success('check_build_test')
+    steps:
+      - name: Send Success Message to Discord
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_USERNAME: 'W3bLocker'
+          DISCORD_AVATAR: 'https://i.imgur.com/BPnQGGY.jpeg'
+          DISCORD_EMBEDS: '[{"color":39423,"title":"${{ github.event.pull_request.title }}","url":"${{ github.event.pull_request.html_url }}", "author": {"name": "${{ github.event.pull_request.user.login}}", "icon_url": "${{ github.event.pull_request.user.avatar_url }}", "url": "${{ github.event.pull_request.user.html_url}}"}, "description":"Branch: ${{ github.event.pull_request.base.ref }}","timestamp":"${{ github.event.pull_request.updated_at }}","footer":{"text":"${{ github.event.repository.full_name }}","icon_url":"${{ github.event.repository.owner.avatar_url }}"}}]'
+        uses: Ilshidur/action-discord@master
 
   send-failure-notification: 
     runs-on: ubuntu-latest
-    - uses: ./.github/workflows/build-test
-      needs: check_build_test
-      if: failure('check_build_test')
-      steps:
-        - name: Send Failure Message to Discord
-          env:
-            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-            DISCORD_USERNAME: 'W3bLocker'
-            DISCORD_AVATAR: 'https://i.imgur.com/BPnQGGY.jpeg'
-            DISCORD_EMBEDS: '[{"color":16189448,"title":"${{ github.event.pull_request.title }}","url":"${{ github.event.pull_request.html_url }}", "author": {"name": "${{ github.event.pull_request.user.login}}", "icon_url": "${{ github.event.pull_request.user.avatar_url }}", "url": "${{ github.event.pull_request.user.html_url}}"}, "description":"SOMETHING GOT WRONG. CHECK LOGS IN GITHUB ACTIONS!","timestamp":"${{ github.event.pull_request.updated_at }}","footer":{"text":"${{ github.event.repository.full_name }}","icon_url":"${{ github.event.repository.owner.avatar_url }}"}}]'
-          uses: Ilshidur/action-discord@master
+    needs: check_build_test
+    if: failure('check_build_test')
+    steps:
+      - name: Send Failure Message to Discord
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_USERNAME: 'W3bLocker'
+          DISCORD_AVATAR: 'https://i.imgur.com/BPnQGGY.jpeg'
+          DISCORD_EMBEDS: '[{"color":16189448,"title":"${{ github.event.pull_request.title }}","url":"${{ github.event.pull_request.html_url }}", "author": {"name": "${{ github.event.pull_request.user.login}}", "icon_url": "${{ github.event.pull_request.user.avatar_url }}", "url": "${{ github.event.pull_request.user.html_url}}"}, "description":"SOMETHING GOT WRONG. CHECK LOGS IN GITHUB ACTIONS!","timestamp":"${{ github.event.pull_request.updated_at }}","footer":{"text":"${{ github.event.repository.full_name }}","icon_url":"${{ github.event.repository.owner.avatar_url }}"}}]'
+        uses: Ilshidur/action-discord@master
 
       # - name: Send Failure Message to Discord
       #   if: failure()
