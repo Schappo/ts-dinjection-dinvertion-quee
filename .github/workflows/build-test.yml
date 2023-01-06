@@ -1,22 +1,29 @@
-name: Send message to Discord
+name: build-test
 
 on:
+  push: 
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  check_build_test:
+  build_test:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
-      - name: Run tests
-        uses: ./.github/actions/build-test.yml
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - run: npm install
+      - run: npm run build
+
+      - run: npm run test
 
   send-success-notification:
     runs-on: ubuntu-latest
-    needs: check_build_test
-    if: success('check_build_test')
+    if: success('build_test')
     steps:
       - name: Send Success Message to Discord
         env:
@@ -28,8 +35,7 @@ jobs:
 
   send-failure-notification: 
     runs-on: ubuntu-latest
-    needs: check_build_test
-    if: failure('check_build_test')
+    if: failure('build_test')
     steps:
       - name: Send Failure Message to Discord
         env:
@@ -38,14 +44,12 @@ jobs:
           DISCORD_AVATAR: 'https://i.imgur.com/BPnQGGY.jpeg'
           DISCORD_EMBEDS: '[{"color":16189448,"title":"${{ github.event.pull_request.title }}","url":"${{ github.event.pull_request.html_url }}", "author": {"name": "${{ github.event.pull_request.user.login}}", "icon_url": "${{ github.event.pull_request.user.avatar_url }}", "url": "${{ github.event.pull_request.user.html_url}}"}, "description":"SOMETHING GOT WRONG. CHECK LOGS IN GITHUB ACTIONS!","timestamp":"${{ github.event.pull_request.updated_at }}","footer":{"text":"${{ github.event.repository.full_name }}","icon_url":"${{ github.event.repository.owner.avatar_url }}"}}]'
         uses: Ilshidur/action-discord@master
-
-      # - name: Send Failure Message to Discord
+      # - name: Discord notification - Test Failure
       #   if: failure()
-      #   uses: ./.github/workflow/build-test@v1
       #   env:
       #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      #     DISCORD_USERNAME: 'W3bLocker'
-      #     DISCORD_AVATAR: 'https://i.imgur.com/BPnQGGY.jpeg'
-      #     DISCORD_EMBEDS: '[{"color":16189448,"title":"${{ github.event.pull_request.title }}","url":"${{ github.event.pull_request.html_url }}", "author": {"name": "${{ github.event.pull_request.user.login}}", "icon_url": "${{ github.event.pull_request.user.avatar_url }}", "url": "${{ github.event.pull_request.user.html_url}}"}, "description":"Branch: ${{ github.event.pull_request.base.ref }} - Something got wrong! Please check github actions!","timestamp":"${{ github.event.pull_request.updated_at }}","footer":{"text":"${{ github.event.repository.full_name }}","icon_url":"${{ github.event.repository.owner.avatar_url }}"}}]'
+      #     DISCORD_USERNAME: BOTJÃO
+      #     DISCORD_EMBEDS: '[{"title": "Run all test","color": 16711680, "description": "Some test brake."}]'
       #   uses: Ilshidur/action-discord@master
-        
+      #   with:
+      #     args: 'Project: {{ EVENT_PAYLOAD.repository.full_name }}'
