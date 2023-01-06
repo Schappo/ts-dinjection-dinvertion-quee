@@ -15,4 +15,4 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           DISCORD_USERNAME: 'W3bLocker'
           DISCORD_AVATAR: 'https://i.imgur.com/BPnQGGY.jpeg'
-          DISCORD_EMBEDS: [{"title": "teste"}]
+          DISCORD_EMBEDS: '[{"title": "teste"}]'
