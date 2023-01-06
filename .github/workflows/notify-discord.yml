@@ -13,7 +13,8 @@ jobs:
         uses: ./.github/workflow/build-test@v1
 
   send-success-notification:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
+    needs: check_build_test
     if: success('check_build_test')
     steps:
       - name: Send Success Message to Discord
