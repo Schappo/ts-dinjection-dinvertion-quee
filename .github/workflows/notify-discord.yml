@@ -13,13 +13,14 @@ jobs:
         id: pr_message
         run: |
           echo "{pr_message}={[{\"title\": \"teste\"}]} >> $GITHUB_OUTPUT"
+
       - name: Send message to Discord
 
-        uses: Ilshidur/action-discord@master
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           DISCORD_USERNAME: 'W3bLocker'
           DISCORD_AVATAR: 'https://i.imgur.com/BPnQGGY.jpeg'
           DISCORD_EMBEDS: ${{ steps.pr_message.output.pr_message }}
+        uses: Ilshidur/action-discord@master
         with:
           args: ''
