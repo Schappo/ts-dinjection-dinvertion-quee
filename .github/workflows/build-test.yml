@@ -20,4 +20,12 @@ jobs:
       - run: npm run build
 
       - run: npm run test
-
+      # - name: Discord notification - Test Failure
+      #   if: failure()
+      #   env:
+      #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      #     DISCORD_USERNAME: BOTJÃO
+      #     DISCORD_EMBEDS: '[{"title": "Run all test","color": 16711680, "description": "Some test brake."}]'
+      #   uses: Ilshidur/action-discord@master
+      #   with:
+      #     args: 'Project: {{ EVENT_PAYLOAD.repository.full_name }}'
