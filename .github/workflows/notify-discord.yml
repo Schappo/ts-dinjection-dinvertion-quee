@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run tests
-        uses: ./.github/actions/build-test.yml
+        uses: .github/workflows/actions/build-test.yml
 
   send-success-notification:
     runs-on: ubuntu-latest
