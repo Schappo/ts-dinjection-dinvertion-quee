@@ -1,0 +1,17 @@
+name: Send message to Discord
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  send_message:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Send message to Discord
+        uses: Ilshidur/action-discord@master
+        with:
+          webhook: <WEBHOOK_URL>
+          message: A new commit has been pushed to the repository!
