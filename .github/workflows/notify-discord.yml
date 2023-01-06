@@ -9,6 +9,7 @@ jobs:
   check_build_test:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Run tests
         uses: ./.github/workflows/build-test@master
 
