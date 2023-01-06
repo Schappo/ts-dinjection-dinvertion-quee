@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run tests
-        uses: .github/workflows/build-test
+        uses: ./.github/workflows/build-test
 
   send-success-notification:
     runs-on: ubuntu-latest
