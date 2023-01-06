@@ -23,6 +23,7 @@ jobs:
 
   send-success-notification:
     runs-on: ubuntu-latest
+    needs: build_test
     if: success('build_test')
     steps:
       - name: Send Success Message to Discord
@@ -35,6 +36,7 @@ jobs:
 
   send-failure-notification: 
     runs-on: ubuntu-latest
+    needs: build_test
     if: failure('build_test')
     steps:
       - name: Send Failure Message to Discord
