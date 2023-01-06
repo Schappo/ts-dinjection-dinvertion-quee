@@ -17,17 +17,7 @@ jobs:
         with:
           node-version: 16.x
       - run: npm install
-      
       - run: npm run build
-      - name: Discord notification Success
-        if: success()
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-          DISCORD_USERNAME: BOTJÃO
-          DISCORD_EMBEDS: '[{"title": "Build process success","color": 4047960, "description": "Builded."}]'
-        uses: Ilshidur/action-discord@master
-        with:
-          args: 'Project: {{ EVENT_PAYLOAD.repository.full_name }}'
 
       - name: Discord notification failure
         if: failure()
@@ -40,22 +30,12 @@ jobs:
           args: 'Project: {{ EVENT_PAYLOAD.repository.full_name }}'
 
       - run: npm run test
-
-      - name: Discord notification - Test Success
-        if: success()
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-          DISCORD_USERNAME: BOTJÃO
-          DISCORD_EMBEDS: '[{"title": "Run all test","color": 4047960, "description": "All test pass."}]'
-        uses: Ilshidur/action-discord@master
-        with:
-          args: 'Project: {{ EVENT_PAYLOAD.repository.full_name }}'
       - name: Discord notification - Test Failure
         if: failure()
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           DISCORD_USERNAME: BOTJÃO
-          DISCORD_EMBEDS: '[{"title": "Run all test","color": 4047960, "description": "Some test brake."}]'
+          DISCORD_EMBEDS: '[{"title": "Run all test","color": 16711680, "description": Some test brake."}]'
         uses: Ilshidur/action-discord@master
         with:
           args: 'Project: {{ EVENT_PAYLOAD.repository.full_name }}'
