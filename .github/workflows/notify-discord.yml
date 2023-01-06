@@ -7,9 +7,10 @@ on:
 
 jobs:
   check_build_test:
-    - name: Run tests
-      runs-on: ubuntu-latest
-      uses: ./.github/workflow/build-test@v1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run tests
+        uses: ./.github/workflow/build-test@v1
 
   send-success-notification:
     runs-on: ubuntu-latest  
@@ -23,17 +24,17 @@ jobs:
           DISCORD_EMBEDS: '[{"color":39423,"title":"${{ github.event.pull_request.title }}","url":"${{ github.event.pull_request.html_url }}", "author": {"name": "${{ github.event.pull_request.user.login}}", "icon_url": "${{ github.event.pull_request.user.avatar_url }}", "url": "${{ github.event.pull_request.user.html_url}}"}, "description":"Branch: ${{ github.event.pull_request.base.ref }}","timestamp":"${{ github.event.pull_request.updated_at }}","footer":{"text":"${{ github.event.repository.full_name }}","icon_url":"${{ github.event.repository.owner.avatar_url }}"}}]'
         uses: Ilshidur/action-discord@master
 
-    send-failure-notification:
-      runs-on: ubuntu-latest  
-      if: failure('check_build_test')
-      steps:
-        - name: Send Failure Message to Discord
-          env:
-            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-            DISCORD_USERNAME: 'W3bLocker'
-            DISCORD_AVATAR: 'https://i.imgur.com/BPnQGGY.jpeg'
-            DISCORD_EMBEDS: '[{"color":16189448,"title":"${{ github.event.pull_request.title }}","url":"${{ github.event.pull_request.html_url }}", "author": {"name": "${{ github.event.pull_request.user.login}}", "icon_url": "${{ github.event.pull_request.user.avatar_url }}", "url": "${{ github.event.pull_request.user.html_url}}"}, "description":"SOMETHING GOT WRONG. CHECK LOGS IN GITHUB ACTIONS!","timestamp":"${{ github.event.pull_request.updated_at }}","footer":{"text":"${{ github.event.repository.full_name }}","icon_url":"${{ github.event.repository.owner.avatar_url }}"}}]'
-          uses: Ilshidur/action-discord@master
+  send-failure-notification: 
+    runs-on: ubuntu-latest
+    if: failure('check_build_test')
+    steps:
+      - name: Send Failure Message to Discord
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_USERNAME: 'W3bLocker'
+          DISCORD_AVATAR: 'https://i.imgur.com/BPnQGGY.jpeg'
+          DISCORD_EMBEDS: '[{"color":16189448,"title":"${{ github.event.pull_request.title }}","url":"${{ github.event.pull_request.html_url }}", "author": {"name": "${{ github.event.pull_request.user.login}}", "icon_url": "${{ github.event.pull_request.user.avatar_url }}", "url": "${{ github.event.pull_request.user.html_url}}"}, "description":"SOMETHING GOT WRONG. CHECK LOGS IN GITHUB ACTIONS!","timestamp":"${{ github.event.pull_request.updated_at }}","footer":{"text":"${{ github.event.repository.full_name }}","icon_url":"${{ github.event.repository.owner.avatar_url }}"}}]'
+        uses: Ilshidur/action-discord@master
 
       # - name: Send Failure Message to Discord
       #   if: failure()
